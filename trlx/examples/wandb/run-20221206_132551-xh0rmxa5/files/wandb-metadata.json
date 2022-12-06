@@ -1,0 +1,105 @@
+{
+    "os": "Linux-5.10.102.1-microsoft-standard-WSL2-x86_64-with-glibc2.31",
+    "python": "3.9.15",
+    "heartbeatAt": "2022-12-06T13:25:53.110337",
+    "startedAt": "2022-12-06T13:25:51.933956",
+    "docker": null,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "/home/genesis/Documents/Projects/magic-rlhf-session/trlx/examples/ppo_sentiments.py",
+    "codePath": "examples/ppo_sentiments.py",
+    "git": {
+        "remote": "https://github.com/TheExGenesis/trlx",
+        "commit": "33deeb1a3534ee46555e40a70c64d12bcabd73db"
+    },
+    "email": "7385326+TheExGenesis@users.noreply.github.com",
+    "root": "/home/genesis/Documents/Projects/magic-rlhf-session/trlx",
+    "host": "LAPTOP-7VGTS0VK",
+    "username": "root",
+    "executable": "/root/anaconda3/envs/rlhf/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2994.2799999999993,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2994.28,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "total": 250.98248672485352,
+        "used": 209.9982452392578
+    },
+    "gpu": "NVIDIA GeForce GTX 1650",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1650",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 14.64078140258789
+    }
+}
