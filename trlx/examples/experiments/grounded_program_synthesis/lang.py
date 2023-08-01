@@ -12,7 +12,7 @@ def init_random_input(len_range: int = 5, value_gen=5) -> list:
     len_gen = random.randint(2, len_range + 1)
     value_range = list(range(-value_gen, value_gen + 1))
     output = []
-    for index in range(len_gen):
+    for _ in range(len_gen):
         value_gen = random.choice(value_range)
         output.append(value_gen)
     return output
@@ -122,9 +122,9 @@ generation_template = {"function_template": "NONE", "output": "NONE", "input": [
 
 
 def gen_take(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(range(1, len(expr1) - 1))
 
     formatted_fn = f"take({expr1},{expr2})"
@@ -136,9 +136,9 @@ def gen_take(expr1=None, expr2=None):
 
 
 def gen_drop(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(range(1, len(expr1) - 1))
 
     formatted_fn = f"drop({expr1},{expr2})"
@@ -150,7 +150,7 @@ def gen_drop(expr1=None, expr2=None):
 
 
 def gen_minimum(expr1=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
 
     formatted_fn = f"minimum({expr1})"
@@ -162,7 +162,7 @@ def gen_minimum(expr1=None):
 
 
 def gen_maximum(expr1=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
 
     formatted_fn = f"maximum({expr1})"
@@ -174,7 +174,7 @@ def gen_maximum(expr1=None):
 
 
 def gen_reverse(expr1=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
 
     formatted_fn = f"reverse({expr1})"
@@ -186,7 +186,7 @@ def gen_reverse(expr1=None):
 
 
 def gen_sort_asc(expr1=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
 
     formatted_fn = f"sort_asc({expr1})"
@@ -198,7 +198,7 @@ def gen_sort_asc(expr1=None):
 
 
 def gen_sort_des(expr1=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
 
     formatted_fn = f"sort_des({expr1})"
@@ -210,9 +210,9 @@ def gen_sort_des(expr1=None):
 
 
 def gen_add_n(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(const_integer)
 
     formatted_fn = f"add_n({expr1},{expr2})"
@@ -224,9 +224,9 @@ def gen_add_n(expr1=None, expr2=None):
 
 
 def gen_sub_n(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(const_integer)
 
     formatted_fn = f"sub_n({expr1},{expr2})"
@@ -238,9 +238,9 @@ def gen_sub_n(expr1=None, expr2=None):
 
 
 def gen_mul_n(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(const_integer)
 
     formatted_fn = f"mul_n({expr1},{expr2})"
@@ -252,9 +252,9 @@ def gen_mul_n(expr1=None, expr2=None):
 
 
 def gen_div_n(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(const_integer)
 
     formatted_fn = f"div_n({expr1},{expr2})"
@@ -266,9 +266,9 @@ def gen_div_n(expr1=None, expr2=None):
 
 
 def gen_expand_copy(expr1=None, expr2=None):
-    if expr1 == None:
+    if expr1 is None:
         expr1 = init_random_input()
-    if expr2 == None:
+    if expr2 is None:
         expr2 = random.choice(range(1, 3))
 
     formatted_fn = f"expand_copy({expr1},{expr2})"
@@ -305,7 +305,7 @@ class Sampler:
         self.max_sample_length = max_sample_length
         self.parser = Interpreter()
         self.production_list = list_manip_dsl
-        self.production_idt = [i for i in self.production_list.keys()]
+        self.production_idt = list(self.production_list.keys())
         self.production_gen_list = list_manip_dsl_gen
         self.code_sep = code_sep
         self.interpreter_sep = interpreter_sep
@@ -313,31 +313,28 @@ class Sampler:
     def sample_production(self, gen_length: int = 5):
         init_flag = True
         hash_functions = []
-        if gen_length == None:
+        if gen_length is None:
             gen_length = self.max_sample_length
 
-        for ind in range(gen_length):
+        for _ in range(gen_length):
+            random_chosen_function = random.choice(self.production_idt)
             if init_flag:
-                random_chosen_function = random.choice(self.production_idt)
                 generated_function = self.production_gen_list[random_chosen_function]()
-                hash_functions.append(generated_function)
                 init_flag = False
             else:
-                random_chosen_function = random.choice(self.production_idt)
                 generated_function = self.production_gen_list[random_chosen_function](
                     hash_functions[-1]["function_template"]
                 )
                 if generated_function["output"] == "ERROR":
                     break
-                hash_functions.append(generated_function)
-
+            hash_functions.append(generated_function)
         return hash_functions
 
 
 def create_synthetic_dataset(size: int, io_size=3) -> dict:
     output_list = []
     sampler = Sampler()
-    for i in tqdm(range(size)):
+    for _ in tqdm(range(size)):
         try:
             sampled = sampler.sample_production()
             inp = sampled[0]["input"][0]
@@ -345,7 +342,7 @@ def create_synthetic_dataset(size: int, io_size=3) -> dict:
             function = sampled[-1]["function_template"]
             prompt_inp = f"Input: {inp} Output: {out} Function:"
             prompt_out = function
-            if out != [] and out != "ERROR":
+            if out not in [[], "ERROR"]:
                 output_list.append(
                     {
                         "input": prompt_inp,

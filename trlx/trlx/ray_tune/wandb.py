@@ -28,16 +28,15 @@ ray_info = [
 
 
 def parse_result(result):
-    out = {}
-    for k, v in result.items():
+    return {
+        k: v
+        for k, v in result.items()
         if (
             isinstance(v, (int, float))
             and not k.startswith("config.")
             and k not in ray_info
-        ):
-            out[k] = v
-
-    return out
+        )
+    }
 
 
 def significant(x):
@@ -184,7 +183,7 @@ def create_report(project_name, param_space, tune_config, trial_path, best_confi
             )
         )
 
-    report.blocks = report.blocks + [
+    report.blocks += [
         wb.H1(text="Metrics"),
         wb.P(
             "The following line plots show the metrics for each trial. Use this to investigate the "
@@ -201,13 +200,15 @@ def create_report(project_name, param_space, tune_config, trial_path, best_confi
     ]
 
     if best_config:
-        report.blocks = report.blocks + [
+        report.blocks += [
             wb.H1(text="Best Config"),
             wb.P(
                 "The code block shown below is the best config found by the hyperparameter "
                 "optimization experiment according to Ray Tune."
             ),
-            wb.CodeBlock(code=[json.dumps(best_config, indent=4)], language="json"),
+            wb.CodeBlock(
+                code=[json.dumps(best_config, indent=4)], language="json"
+            ),
         ]
 
     report.save()

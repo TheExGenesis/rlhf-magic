@@ -37,14 +37,12 @@ def reward_fn(samples):
         if interpreted_output == "ERROR":
             # If the code is unparsable, we give it a negative reward.
             reward_list.append(-1)
+        elif output == interpreted_output:
+            # if the output is correct, we give it a positive reward.
+            reward_list.append(1)
         else:
-            # if the code is parseable
-            if output == interpreted_output:
-                # if the output is correct, we give it a positive reward.
-                reward_list.append(1)
-            else:
-                # if the output is incorrect, we give it a negative reward.
-                reward_list.append(-0.5)
+            # if the output is incorrect, we give it a negative reward.
+            reward_list.append(-0.5)
 
     return reward_list
 

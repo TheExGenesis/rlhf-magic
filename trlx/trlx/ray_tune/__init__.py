@@ -102,7 +102,7 @@ def get_search_alg(tune_config: dict):
                 "Please pip install bayesian-optimization to use BayesOptSearch."
             )
 
-        assert "metric" in tune_config.keys() and "mode" in tune_config.keys()
+        assert "metric" in tune_config and "mode" in tune_config
         "Please specify metric and mode for BayesOptSearch."
 
         return BayesOptSearch(metric=tune_config["metric"], mode=tune_config["mode"])
@@ -114,7 +114,7 @@ def get_search_alg(tune_config: dict):
                 "Please pip install hpbandster and ConfigSpace to use TuneBOHB."
             )
 
-        assert "metric" in tune_config.keys() and "mode" in tune_config.keys()
+        assert "metric" in tune_config and "mode" in tune_config
         "Please specify metric and mode for TuneBOHB."
 
         return TuneBOHB()
@@ -153,10 +153,10 @@ def get_tune_config(tune_config: dict):
     """Get the tune config to initialized `tune.TuneConfig`
     to be passed `tune.Tuner`.
     """
-    if "search_alg" in tune_config.keys() and tune_config["search_alg"] is not None:
+    if "search_alg" in tune_config and tune_config["search_alg"] is not None:
         tune_config["search_alg"] = get_search_alg(tune_config)
 
-    if "scheduler" in tune_config.keys() and tune_config["scheduler"] is not None:
+    if "scheduler" in tune_config and tune_config["scheduler"] is not None:
         tune_config["scheduler"] = get_scheduler(tune_config)
 
     # Remove config keys with None values.

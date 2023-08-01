@@ -32,7 +32,7 @@ def test_hf_attr_getters(model_name: str):
         try:
             get(arch)
         except Exception as e:
-            assert False, "Failed to get model attribute with error: " + str(e)
+            assert False, f"Failed to get model attribute with error: {str(e)}"
 
     config_getters = [
         modeling_utils.hf_get_hidden_size,
@@ -42,4 +42,4 @@ def test_hf_attr_getters(model_name: str):
         try:
             get(config)
         except Exception as e:
-            assert False, "Failed to get config attribute with error: " + str(e)
+            assert False, f"Failed to get config attribute with error: {str(e)}"

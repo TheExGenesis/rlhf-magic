@@ -96,8 +96,7 @@ class PPOOrchestrator(Orchestrator):
             elif self.rl_model.config.method.scale_reward == "ref":
                 scores /= self.ref_std
 
-            clip_reward = self.rl_model.config.method.cliprange_reward
-            if clip_reward:
+            if clip_reward := self.rl_model.config.method.cliprange_reward:
                 scores = torch.clip(scores, -clip_reward, clip_reward)
 
             # Precompute logprobs, values

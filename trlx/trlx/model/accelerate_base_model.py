@@ -129,12 +129,11 @@ class AccelerateRLModel(BaseRLModel):
             )
 
     def get_components(self) -> Dict[str, Any]:
-        components = (
+        return (
             {"model": self.model, "opt": self.opt, "scheduler": self.scheduler}
             if self.train_mode
             else {"model": self.model}
         )
-        return components
 
     def save(self, directory=None):
         """Creates checkpoint of optimizer, scheduler and a model"""
@@ -146,7 +145,6 @@ class AccelerateRLModel(BaseRLModel):
 
     def evaluate(self):
         """Samples model on `eval_prompts`, logs stats with `reward_fn` or `metric_fn` if provided"""
-        stats = {}
         all_samples = []
         generate_time = time()
         for prompts in self.eval_dataloader:
@@ -166,18 +164,14 @@ class AccelerateRLModel(BaseRLModel):
                     value=pad_token,
                 )
             )
-        stats["generate_time"] = time() - generate_time
-
+        stats = {"generate_time": time() - generate_time}
         samples = self.accelerator.gather(torch.vstack(all_samples))
 
         if self.accelerator.is_main_process:
             if self.tokenizer:
                 samples = self.tokenizer.batch_decode(samples, skip_special_tokens=True)
 
-            if isinstance(samples[0], str):
-                columns_data = [samples]
-            else:
-                columns_data = [samples.tolist()]
+            columns_data = [samples] if isinstance(samples[0], str) else [samples.tolist()]
             columns = ["samples"]
 
             # in online setting, compute the reward for validation
@@ -200,7 +194,7 @@ class AccelerateRLModel(BaseRLModel):
                     for k, xs in metrics.items()
                 }
 
-                stats.update(mean_metrics)
+                stats |= mean_metrics
 
                 for metric, values in metrics.items():
                     columns.append(metric)
@@ -222,8 +216,7 @@ class AccelerateRLModel(BaseRLModel):
         self.iter_count = 0
 
         if ray.is_initialized():
-            checkpoint = session.get_checkpoint()
-            if checkpoint:
+            if checkpoint := session.get_checkpoint():
                 with checkpoint.as_directory() as dir:
                     self.accelerator.load_state(dir)
 

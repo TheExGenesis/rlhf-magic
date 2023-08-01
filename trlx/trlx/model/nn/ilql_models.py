@@ -193,8 +193,7 @@ class CausalLMWithValueHeads(nn.Module):
 
         # enable zero3 init within from_pretrained
         if os.environ.get("DEEPSPEED_ZERO_STAGE", "0") == "3":
-            config_path = os.environ.get("DEEPSPEED_CONFIG_FILE", "")
-            if config_path:
+            if config_path := os.environ.get("DEEPSPEED_CONFIG_FILE", ""):
                 _hfconfig = transformers.deepspeed.HfDeepSpeedConfig(  # noqa: F841
                     config_path
                 )
