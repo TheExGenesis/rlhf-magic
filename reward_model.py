@@ -69,6 +69,4 @@ class GPTRewardModel(nn.Module):
         hidden_states = transformer_outputs['last_hidden_state']
         hidden_states = hidden_states[batch_size, eos_ind] # take the first EOS token
 
-        rewards = self.v_head(hidden_states).squeeze(-1)
-
-        return rewards
+        return self.v_head(hidden_states).squeeze(-1)

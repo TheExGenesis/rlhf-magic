@@ -99,7 +99,7 @@ def generate_random_walks(
 
     logit_mask = torch.tensor(adj)
 
-    eval_prompts = list(sorted(set(w[0] for w in sample_walks)))
+    eval_prompts = list(sorted({w[0] for w in sample_walks}))
     eval_prompts = [prompt + delimiter for prompt in eval_prompts]
 
     return metric_fn, eval_prompts, sample_walks, logit_mask

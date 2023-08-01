@@ -2,8 +2,13 @@ import torch
 from torch.utils.data import Dataset, random_split
 
 def rlhf_tokenize(tokenizer, max_length, prompt):
-    return tokenizer('<|startoftext|>' + prompt + '<|endoftext|>', truncation=True,
-                                       max_length=max_length, padding="max_length", return_tensors="pt")
+    return tokenizer(
+        f'<|startoftext|>{prompt}<|endoftext|>',
+        truncation=True,
+        max_length=max_length,
+        padding="max_length",
+        return_tensors="pt",
+    )
 
 
 class PairwiseDataset(Dataset):

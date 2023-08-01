@@ -162,13 +162,11 @@ class TRLConfig:
         """
         Convert TRLConfig to dictionary.
         """
-        data = {
+        return {
             "model": self.model.__dict__,
             "train": self.train.__dict__,
             "method": self.method.__dict__,
         }
-
-        return data
 
     @classmethod
     def from_dict(cls, config_dict: dict):

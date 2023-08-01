@@ -27,8 +27,7 @@ print(len(get_assistant_prompts(train_data[0]['chosen'])))
 
 def convert_dataset_to_prompts(data):
     list_of_prompts = [get_assistant_prompts(x['chosen']) for x in data]
-    flattened_list_of_prompts = [item for sublist in list_of_prompts for item in sublist]
-    return flattened_list_of_prompts
+    return [item for sublist in list_of_prompts for item in sublist]
 
 def load_ppo_prompts(path):
     # path = "hh-rlhf2/helpful-base/train.jsonl.gz"

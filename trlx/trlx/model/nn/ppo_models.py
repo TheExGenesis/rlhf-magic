@@ -274,9 +274,7 @@ class CausalLMWithValueHead(nn.Module):
         value = self.v_head(last_hidden_state).squeeze(-1)
 
         if not return_dict:
-            outputs = (lm_logits,) + transformer_outputs[1:] + (value,)
-            return outputs
-
+            return (lm_logits,) + transformer_outputs[1:] + (value,)
         return CausalLMOutputWithCrossAttentions(
             loss=None,
             logits=lm_logits,
@@ -350,9 +348,7 @@ class CausalLMHydraWithValueHead(nn.Module):
         # Get size of last hidden state
         output_shape = all_hidden_states[-1].size()
         outputs = self.frozen_head(input_hidden_state, output_shape, **forward_kwargs)
-        if not return_dict:
-            return outputs.logits
-        return outputs
+        return outputs.logits if not return_dict else outputs
 
     def forward(
         self,
@@ -384,9 +380,7 @@ class CausalLMHydraWithValueHead(nn.Module):
         value = self.v_head(last_hidden_state).squeeze(-1)
 
         if not return_dict:
-            outputs = (lm_logits,) + transformer_outputs[1:] + (value,)
-            return outputs
-
+            return (lm_logits,) + transformer_outputs[1:] + (value,)
         return CausalLMOutputWithCrossAttentions(
             loss=None,
             logits=lm_logits,
@@ -576,8 +570,8 @@ class GPTModelBranch(transformers.PreTrainedModel):
             # Model Parallel: If it's the last layer for that device, put things on the next device
             if self.model_parallel:
                 for k, v in self.device_map.items():
-                    if i == v[-1] and "cuda:" + str(k) != self.last_device:
-                        hidden_states = hidden_states.to("cuda:" + str(k + 1))
+                    if i == v[-1] and f"cuda:{str(k)}" != self.last_device:
+                        hidden_states = hidden_states.to(f"cuda:{str(k + 1)}")
 
         hidden_states = self.final_norm(hidden_states)
 

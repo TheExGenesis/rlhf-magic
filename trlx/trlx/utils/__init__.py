@@ -73,15 +73,13 @@ def get_distributed_config(accelerator: Accelerator):
 
     if accelerator.state.deepspeed_plugin is not None:
         ds_plugin = accelerator.state.deepspeed_plugin
-        dist_config.update(
-            {
-                "gradient_accumulation_steps": ds_plugin.gradient_accumulation_steps,
-                "gradient_clipping": ds_plugin.gradient_clipping,
-                "zero_stage": ds_plugin.zero_stage,
-                "offload_optimizer_device": ds_plugin.offload_optimizer_device,
-                "offload_param_device": ds_plugin.offload_param_device,
-            }
-        )
+        dist_config |= {
+            "gradient_accumulation_steps": ds_plugin.gradient_accumulation_steps,
+            "gradient_clipping": ds_plugin.gradient_clipping,
+            "zero_stage": ds_plugin.zero_stage,
+            "offload_optimizer_device": ds_plugin.offload_optimizer_device,
+            "offload_param_device": ds_plugin.offload_param_device,
+        }
 
     return dist_config
 

@@ -55,6 +55,4 @@ def truncated_reward(input_ids, rewards):
         # Check if there is any padding otherwise take length of sequence
         inds = (chosen[i] == PAD_ID).nonzero()
         c_ind = inds[0].item() if len(inds) > 0 else chosen.shape[1]
-        # Index into correct reward
-        c_truncated_reward = chosen_rewards[i][divergence_ind : c_ind]
-        return c_truncated_reward
+        return chosen_rewards[i][divergence_ind : c_ind]

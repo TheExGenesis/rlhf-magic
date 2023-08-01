@@ -29,9 +29,7 @@ class GPTDivergenceRewardModel(PreTrainedModel):
         transformer_outputs = F.relu(self.transformer(embeddings))
 
         hidden_states = transformer_outputs
-        # hidden_states = transformer_outputs[t.batch_inds, eos_ind] # take the first EOS token
-        rewards = self.v_head(hidden_states).squeeze(-1)
-        return rewards
+        return self.v_head(hidden_states).squeeze(-1)
 
 class GPTRewardModel(PreTrainedModel):
     """Trains with PairwiseDivergenceTrainer, since it outputs 1 valule per token"""
@@ -57,5 +55,4 @@ class GPTRewardModel(PreTrainedModel):
 
         hidden_states = transformer_outputs
         hidden_states = transformer_outputs[batch_inds, eos_ind] # take the first EOS token
-        rewards = self.v_head(hidden_states).squeeze(-1)
-        return rewards
+        return self.v_head(hidden_states).squeeze(-1)

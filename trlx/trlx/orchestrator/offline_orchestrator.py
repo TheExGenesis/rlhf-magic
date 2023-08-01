@@ -18,11 +18,7 @@ class OfflineOrchestrator(Orchestrator):
         """
         Tokenizes samples and shapes rewards into proper tensors and then inserts the resulting dataset into the model
         """
-        if self.model.tokenizer:
-            input_ids = self.model.tokenize(samples)
-        else:
-            input_ids = samples
-
+        input_ids = self.model.tokenize(samples) if self.model.tokenizer else samples
         input_ids = list(map(torch.as_tensor, input_ids))
 
         states_ixs, actions_ixs = [], []

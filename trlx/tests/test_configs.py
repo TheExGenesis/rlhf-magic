@@ -8,19 +8,17 @@ def _get_config_dirs(dir: str, config_dir_name: str = "configs") -> List[str]:
     """Returns all sub-directories of `dir` named `configs`."""
     config_dirs = []
     for root, dirs, _ in os.walk(dir):
-        for d in dirs:
-            if d == config_dir_name:
-                config_dirs.append(os.path.join(root, d))
+        config_dirs.extend(os.path.join(root, d) for d in dirs if d == config_dir_name)
     return config_dirs
 
 
 def _get_yaml_filepaths(dir: str) -> List[str]:
     """Returns a list of `yml` filepaths in `dir`."""
-    filepaths = []
-    for file in os.listdir(dir):
-        if file.endswith(".yml"):
-            filepaths.append(os.path.join(dir, file))
-    return filepaths
+    return [
+        os.path.join(dir, file)
+        for file in os.listdir(dir)
+        if file.endswith(".yml")
+    ]
 
 
 def test_repo_trl_configs():

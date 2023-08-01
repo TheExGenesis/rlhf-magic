@@ -200,14 +200,12 @@ def flatten_dict(
 
 def log_stat(stats: dict, name: str, xs: torch.Tensor, mask: torch.Tensor, n: int):
     mean = (xs * mask).sum() / n
-    stats.update(
-        {
-            f"{name}/mean": mean,
-            f"{name}/min": torch.where(mask.bool(), xs, np.inf).min(),
-            f"{name}/max": torch.where(mask.bool(), xs, -np.inf).max(),
-            f"{name}/std": torch.sqrt(((xs - mean) * mask).pow(2).sum() / n),
-        }
-    )
+    stats |= {
+        f"{name}/mean": mean,
+        f"{name}/min": torch.where(mask.bool(), xs, np.inf).min(),
+        f"{name}/max": torch.where(mask.bool(), xs, -np.inf).max(),
+        f"{name}/std": torch.sqrt(((xs - mean) * mask).pow(2).sum() / n),
+    }
 
 
 class RunningMoments:
